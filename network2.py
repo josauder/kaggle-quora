@@ -84,7 +84,16 @@ class Network(object):
 				self.input_layer: test_data.images, 
 				self.keep_prob:1})
 
-		
+	
+	
+	def restore(self, checkpoint, test_data):
+		with tf.Session() as sess:
+			saver.restore(sess, checkpoint)
+			
+			print get_results(test_data, sess)
+
+			
+
 	"""	def evaluate_log_loss(self, test_data, sess):
 		return self.log_loss.eval(
 					session=sess,
