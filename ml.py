@@ -160,6 +160,7 @@ def main():
 	######
 	## TEST
 	######
+	
 	begin = time.time()
 	network2.shuffle_same_indices(z,l)
 	t = time.time() - begin
@@ -188,22 +189,24 @@ def main():
 	testindices[zeros]=1
 	testindices = np.argwhere(testindices)[:,0].reshape(4000)
 
-	train = Dataset(z[full], la[full])
-	test  = Dataset(z[testindices], la[testindices])
+	#train = Dataset(z[full], la[full])
+	#test  = Dataset(z[testindices], la[testindices])
 
+	train = Dataset(z,la)
 	#######
 	## EVALUATE
 	#######
 
-	print test.images[:10]
-	print test.labels[:100]
+	#print test.images[:10]
+	#print test.labels[:100]
 
 	#train = Dataset(z,la)
 	#test = 
 
 	net = network2.Network([1200,600,300,100,2])
-	#net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
-	net.SGD(train, 20000, 32, 1, test_data=test, lmbda = 0.0005, keep_prob=0.5)
+	
+	net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
+	#net.SGD(train, 20000, 32, 100, test_data=test, lmbda = 0.0005, keep_prob=0.5)
 
 if __name__=='__main__':
 	main()

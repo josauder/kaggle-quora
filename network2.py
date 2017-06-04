@@ -126,8 +126,12 @@ class Network(object):
 						self.learning_rate: eta,
 						self.lmbda: lmbda,
 						self.keep_prob : keep_prob})
-			if j%10==0 and j!=0:
-				eta =eta*0.96
+			
+			if j%5==0 and j!=0:
+				if j<50:
+					eta*=0.5
+				else:
+					eta =eta*0.965
 				print "learning rate adapted to: ", eta
 			
 			if test_data and not save:
