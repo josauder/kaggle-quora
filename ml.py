@@ -143,11 +143,13 @@ q = Questions(wc)
 q.load_first_n_questions()
 """
 
-we = WordEmbeddings()
-we.read_embeddings(500000)
-weighter = Weighter(we)
 
 def main():
+	
+	we = WordEmbeddings()
+	we.read_embeddings(500000)
+	weighter = Weighter(we)
+	
 	q = Questions(weighter)
 	q.load_first_n_questions()
 
