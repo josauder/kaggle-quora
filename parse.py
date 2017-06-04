@@ -84,33 +84,40 @@ class WordCounter(object):
 
 class TestQuestions(object):
 	def __init__(self, sentence_each):
+		
 		with open("data/test.csv", "r") as f:
-					reader = csv.reader(f, delimiter=',', quotechar='"')
-					next(reader)
+			with open ("submission.csv", "w") as g:
+				print >> g, "test_id,is_duplicate"
+
+				net = network2.Network([1200,100,2])
+				sess = net.restore("my-model-10")
+
+
+				reader = csv.reader(f, delimiter=',', quotechar='"')
+				next(reader)
+				
+				i=0
+				for line in reader:
+					if i%1000==0:
+						print "Read first ",i," test questions"
+							
+					pair_id = int(line[0])
+					q1 = line[1]
+					q1 = q_to_words(q1)
+					#''.join(ch.lower() for ch in q1.replace(","," ") if ch.isalnum() or ch==' ').split()
+					q2 = line[2]
+					q2 = q_to_words(q2)
+					#''.join(ch.lower() for ch in q2.replace(","," ") if ch.isalnum() or ch==' ').split()
+					is_duplicate = None
 					
-					i=0
-					for line in reader:
-						"""
-						if i>=max_n:
-							break
-						if i%1000==0:
-							print "Read first ",i," questions"
-								
-						pair_id = int(line[0])
-						qid1 = int(line[1])
-						qid2 = int(line[2])
-						q1 = line[3]
-						q1 = q_to_words(q1)
-						#''.join(ch.lower() for ch in q1.replace(","," ") if ch.isalnum() or ch==' ').split()
-						q2 = line[4]
-						q2 = q_to_words(q2)
-						#''.join(ch.lower() for ch in q2.replace(","," ") if ch.isalnum() or ch==' ').split()
-						is_duplicate = None
-						"""
-						i+=1
-					print i
-						#self.sentence_each.process(q1,q2,is_duplicate)		
-	
+					vec =  sentence_each.process(q1,q2,is_duplicate)		
+					
+					print >> g,str(i)+","+str(net.get_results(Dataset(vec.reshape(1200,1).T,None),sess)[:,1][0])
+
+					i+=1
+				sess.close()
+
+
 	
 class Questions(object):
 	

@@ -63,7 +63,7 @@ class WordEmbeddings(object):
 			return True
 		else:
 			self.words_didnt_exist.add(word)
-			print word
+		#	print word
 			return False
 
 	def load_filtered_embeddings(self):

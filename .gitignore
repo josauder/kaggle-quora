@@ -1,7 +1,7 @@
 .idea/*
 *.pyc
 data/*
-
+submission.csv
 MNIST_data/*
 checkpoint
 my-model-*

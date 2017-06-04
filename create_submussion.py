@@ -4,20 +4,15 @@ from parse import *
 import time
 
 we = WordEmbeddings()
-we.read_embeddings(10000)
-weighter = Weighter(we,10000)
-
-q = Questions(weighter)
-q.load_first_n_questions(10000)
+we.read_embeddings(300000)
 
 
-z, l = weighter.arr, weighter.is_duplicate
+weighter = Evaluator(we, 2345796)
 
-weighter = None
-we = None
-q = None
+q = TestQuestions(weighter)
 
-######
+
+"""######
 ## TEST
 ######
 begin = time.time()
@@ -51,12 +46,11 @@ testindices = np.argwhere(testindices)[:,0].reshape(4000)
 train = Dataset(z[full], la[full])
 test  = Dataset(z[testindices], la[testindices])
 
+"""
 
 
-net = network2.Network([1200,100,2])
-sess = net.restore("my-model-10")
-print net.get_results(test,sess)
-sess.close()
+
+
 
 
 

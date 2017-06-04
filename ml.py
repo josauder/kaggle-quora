@@ -147,59 +147,63 @@ we = WordEmbeddings()
 we.read_embeddings(300000)
 weighter = Weighter(we)
 
-q = Questions(weighter)
-q.load_first_n_questions()
+def main():
+	q = Questions(weighter)
+	q.load_first_n_questions()
 
-z, l = weighter.arr, weighter.is_duplicate
+	z, l = weighter.arr, weighter.is_duplicate
 
-weighter = None
-we = None
-q = None
+	weighter = None
+	we = None
+	q = None
 
-######
-## TEST
-######
-begin = time.time()
-network2.shuffle_same_indices(z,l)
-t = time.time() - begin
-print "shuffled in", t
+	######
+	## TEST
+	######
+	begin = time.time()
+	network2.shuffle_same_indices(z,l)
+	t = time.time() - begin
+	print "shuffled in", t
 
-ones = np.argwhere( l == 1)
-zeros = np.argwhere ( l == 0)
+	ones = np.argwhere( l == 1)
+	zeros = np.argwhere ( l == 0)
 
-begin = time.time()
-la = np.zeros((l.size, 2))
-la[ones] = np.array([0,1])
-la[zeros] = np.array([1,0])
-t = time.time() - begin
-print "converted labels to one-hot encoded in", t
+	begin = time.time()
+	la = np.zeros((l.size, 2))
+	la[ones] = np.array([0,1])
+	la[zeros] = np.array([1,0])
+	t = time.time() - begin
+	print "converted labels to one-hot encoded in", t
 
-ones = ones [:2000]
-zeros = zeros [:2000]
+	ones = ones [:2000]
+	zeros = zeros [:2000]
 
-full = np.ones(l.shape, dtype=int)
-full[ones] = 0
-full[zeros] = 0
-full = np.argwhere(full)[:,0].reshape(l.shape[0]-4000)
+	full = np.ones(l.shape, dtype=int)
+	full[ones] = 0
+	full[zeros] = 0
+	full = np.argwhere(full)[:,0].reshape(l.shape[0]-4000)
 
-testindices = np.zeros(l.shape, dtype = int)
-testindices[ones]=1
-testindices[zeros]=1
-testindices = np.argwhere(testindices)[:,0].reshape(4000)
+	testindices = np.zeros(l.shape, dtype = int)
+	testindices[ones]=1
+	testindices[zeros]=1
+	testindices = np.argwhere(testindices)[:,0].reshape(4000)
 
-train = Dataset(z[full], la[full])
-test  = Dataset(z[testindices], la[testindices])
+	train = Dataset(z[full], la[full])
+	test  = Dataset(z[testindices], la[testindices])
 
-#######
-## EVALUATE
-#######
+	#######
+	## EVALUATE
+	#######
 
-print test.images[:10]
-print test.labels[:100]
+	print test.images[:10]
+	print test.labels[:100]
 
-#train = Dataset(z,la)
-#test = 
+	#train = Dataset(z,la)
+	#test = 
 
-net = network2.Network([1200,100,2])
-#net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
-net.SGD(train, 20000, 32, 0.1, test_data=test, lmbda = 0.0005, keep_prob=0.5)
+	net = network2.Network([1200,600,300,100,2])
+	#net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
+	net.SGD(train, 20000, 32, 1, test_data=test, lmbda = 0.0005, keep_prob=0.5)
+
+if __name__=='__main__':
+	main()
