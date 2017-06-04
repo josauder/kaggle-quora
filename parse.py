@@ -4,7 +4,7 @@ import numpy as np
 import cPickle
 import network2
 import random
-from wn_helpers import *
+#from wn_helpers import *
 from word_embeddings import *
 from parse2 import *
 
