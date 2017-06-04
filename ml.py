@@ -174,7 +174,6 @@ la[zeros] = np.array([1,0])
 t = time.time() - begin
 print "converted labels to one-hot encoded in", t
 
-"""
 ones = ones [:2000]
 zeros = zeros [:2000]
 
@@ -190,13 +189,13 @@ testindices = np.argwhere(testindices)[:,0].reshape(4000)
 
 train = Dataset(z[full], la[full])
 test  = Dataset(z[testindices], la[testindices])
-"""
+
 #######
 ## EVALUATE
 #######
 
-train = Dataset(z,la)
+#train = Dataset(z,la)
 #test = 
 
 net = network2.Network([1200,100,2])
-net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
+net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5)#, save=True)
