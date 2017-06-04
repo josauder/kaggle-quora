@@ -1,0 +1,9 @@
+*.pyc
+data/*
+
+MNIST_data/*
+checkpoint
+my-model-*
+pickled/*
+outputs/*
+other/*
