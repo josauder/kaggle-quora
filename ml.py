@@ -194,9 +194,12 @@ test  = Dataset(z[testindices], la[testindices])
 ## EVALUATE
 #######
 
+print test.images[:10]
+print test.labels[:100]
+
 #train = Dataset(z,la)
 #test = 
 
 net = network2.Network([1200,100,2])
 #net.SGD(train, 20000, 32, 1, lmbda = 0.0005, keep_prob=0.5, save=True)
-net.SGD(train, 20000, 32, 1, test_data=test, lmbda = 0.0005, keep_prob=0.5)
+net.SGD(train, 20000, 32, 0.1, test_data=test, lmbda = 0.0005, keep_prob=0.5)

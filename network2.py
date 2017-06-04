@@ -68,6 +68,8 @@ class Network(object):
 		correct_prediction = tf.equal(tf.argmax(current_layer,1), tf.argmax(self.correct_labels,1))
 		self.accuracy = tf.reduce_sum(tf.cast(correct_prediction, tf.int32))
 #		self.log_loss = tf.losses.log_loss(labels=self.correct_labels + 10e-15, predictions = current_layer)
+		self.saver = tf.train.Saver(max_to_keep=3)
+
 	
 	def evaluate(self, test_data, sess):
 		return self.accuracy.eval(
@@ -85,13 +87,12 @@ class Network(object):
 				self.keep_prob:1})
 
 	
-	
-	def restore(self, checkpoint, test_data):
-		with tf.Session() as sess:
-			saver.restore(sess, checkpoint)
-			
-			print get_results(test_data, sess)
-
+	def restore(self, checkpoint):
+		sess = tf.Session()
+		saver = tf.train.import_meta_graph(checkpoint+'.meta')
+		saver.restore(sess,tf.train.latest_checkpoint('./'))
+		sess.run(tf.global_variables_initializer())
+		return sess
 			
 
 	"""	def evaluate_log_loss(self, test_data, sess):
@@ -110,7 +111,6 @@ class Network(object):
 		
 		sess=tf.Session()
 		sess.run(tf.global_variables_initializer())
-		saver = tf.train.Saver(max_to_keep=3)
 
 		for j in xrange(epochs):
 			shuffle_same_indices(training_data.images,training_data.labels)
@@ -133,8 +133,9 @@ class Network(object):
 			if test_data and not save:
 				print("Epoch {0}: {1} / {2}"#, log_loss: {3}"
 					.format(j,self.evaluate(test_data,sess),n_test))#, self.evaluate_log_loss(test_data,sess)))
+			
 			if j%10==0 and j!=0 and save:
-				saver.save(sess, "my-model", global_step=j)	
+				self.saver.save(sess, "my-model", global_step=j)	
 			
 			
 			#if j%4==0 and j!=0 and test_data and save:
