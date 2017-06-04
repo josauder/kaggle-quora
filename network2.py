@@ -129,7 +129,7 @@ class Network(object):
 			
 			if j%5==0 and j!=0:
 				if j<50:
-					eta*=0.5
+					eta*=0.66
 				else:
 					eta =eta*0.965
 				print "learning rate adapted to: ", eta
